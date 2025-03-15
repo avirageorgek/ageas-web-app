@@ -11,7 +11,7 @@ const getGeoLocation = async (req, res) => {
         }
 
         //Generate url to make API call
-        let url = `${process.env.WEATHER_API_URL}v1/search?name=${query}&count=10&language=en&format=json`;
+        let url = `${process.env.GEOLOCATION_API_BASE_URL}v1/search?name=${query}&count=10&language=en&format=json`;
         let searchResult = await apiCall(url, "GET", null, null);
         return responseGenerator(res, 200, true, "Success", searchResult);
 
