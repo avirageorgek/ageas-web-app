@@ -3,12 +3,16 @@ import Header from './components/Header'
 import SearchBox from './components/SearchBox'
 import CustomButton from './components/CustomButton';
 import {searchLocations} from "./actions/geolocation";
+import { getWeatherData } from './actions/weather';
 import WeatherDetailsItem from './components/WeatherDetailsItem';
+import { WeatherObject } from './types/generic';
+import { WEATHER_ICONS } from './constants/weatherIcons';
 
 function App() {
 
   const [currentLocation, setCurrentLocation] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [weatherData, setWeatherData] = useState<WeatherObject[]>([]);
 
   const searchLocation = async () => {
     if(!currentLocation) {
@@ -18,8 +22,15 @@ function App() {
 
     setErrorMessage("");
     let result = await searchLocations(currentLocation);
+    console.log("Final: ",result)
+    if(result && result.length > 0) {
+      console.log("Result here");
+      let data = await getWeatherData(result[0].latitude, result[0].longitude, 5);
+      if(data) {
+        setWeatherData(data.formattedData);
+      }
 
-    console.log("Result from backend: ", result)
+    }
 
   }
 
@@ -39,16 +50,21 @@ function App() {
           <CustomButton onClick={searchLocation}/>
         </div>
       </div>
-      {/* <div className='flex flex-row justify-center py-50'>
-        <div className="grid lg:grid-cols-5 md:grid-cols-5 sm:grid-cols-1 gap-10">
-          <WeatherDetailsItem />
-          <WeatherDetailsItem />
-          <WeatherDetailsItem />
-          <WeatherDetailsItem />
-          <WeatherDetailsItem />
+      <div className='flex flex-row justify-center py-50'>
+        <div className="grid lg:grid-cols-5 md:grid-cols-2 sm:grid-cols-1 gap-5">
+          {
+            weatherData.map((weather) => {
+              return (<WeatherDetailsItem date={weather.date} weatherIcon={WEATHER_ICONS[weather.weatherCode]}
+                description={weather.weatherDescription} temperatureMin={weather.temperatureMin} 
+                temperatureMax={weather.temperatureMax} windSpeedMin={weather.windSpeedMin}
+                windSpeedMax={weather.windSpeedMax}
+              />)
+            })
+            
+          }
         </div>
             
-      </div> */}
+      </div>
     </>
   )
 }

@@ -1,0 +1,45 @@
+import React from "react";
+import { WiDaySunny, 
+    WiDaySunnyOvercast, 
+    WiFog, 
+    WiRainMix, 
+    WiNightAltRainMix, 
+    WiRain, 
+    WiSnowWind,
+    WiSnow,
+    WiThunderstorm,
+    WiDaySnowThunderstorm,
+ } from "weather-icons-react";
+
+export const WEATHER_ICONS: {
+    [key: number]: React.ReactNode
+} = {
+    0: <WiDaySunny size={60} color='#000' />,
+    1: <WiDaySunnyOvercast size={60} color='#000' />,
+    2: <WiDaySunnyOvercast size={60} color='#000' />,
+    3: <WiDaySunnyOvercast size={60} color='#000' />,
+    45: <WiFog size={60} color='#000' />,
+    48: <WiFog size={60} color='#000' />,
+    51: <WiRainMix size={60} color='#000' />, 
+    53: <WiRainMix size={60} color='#000' />, 
+    55: <WiRainMix size={60} color='#000' />,
+    56: <WiNightAltRainMix size={60} color='#000' />, 
+    57: <WiNightAltRainMix size={60} color='#000' />,
+    61: <WiRain size={60} color='#000' />, 
+    63: <WiRain size={60} color='#000' />, 
+    65: <WiRain size={60} color='#000' />,
+    66: <WiNightAltRainMix size={60} color='#000' />, 
+    67: <WiNightAltRainMix size={60} color='#000' />,
+    71: <WiSnowWind size={60} color='#000' />,
+    73: <WiSnowWind size={60} color='#000' />,
+    75: <WiSnowWind size={60} color='#000' />,
+    77: <WiSnowWind size={60} color='#000' />,
+    80: <WiRain size={60} color='#000' />,
+    81: <WiRain size={60} color='#000' />,
+    82: <WiRain size={60} color='#000' />,
+    85: <WiSnow size={60} color='#000' />,
+    86: <WiSnow size={60} color='#000' />,
+    95: <WiThunderstorm size={60} color='#000' />,
+    96: <WiDaySnowThunderstorm size={60} color='#000' />,
+    99: <WiDaySnowThunderstorm size={60} color='#000' />
+}

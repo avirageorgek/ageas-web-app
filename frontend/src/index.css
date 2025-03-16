@@ -17,3 +17,7 @@
 .error-message {
   color: red;
 }
+
+.weather-details-item {
+  background-color: black;
+}
