@@ -22,8 +22,8 @@ const formatWeatherData = (weatherData) => {
             weatherDescription: WEATHER_VARIABLE_CODES[weatherData.daily.weather_code[index]],
             temperatureMin: weatherData.daily.temperature_2m_min[index],
             temperatureMax: weatherData.daily.temperature_2m_max[index],
-            windSpeedMin: weatherData.daily.wind_speed_10m_min,
-            windSpeedMax: weatherData.daily.wind_speed_10m_max
+            windSpeedMin: weatherData.daily.wind_speed_10m_min[index],
+            windSpeedMax: weatherData.daily.wind_speed_10m_max[index]
         }
     })
     obj["formattedData"] = mappedData
