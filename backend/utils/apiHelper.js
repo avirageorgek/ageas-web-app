@@ -15,10 +15,9 @@ const apiCall = async (url, method, headers, body) => {
             let formattedBody = JSON.stringify(body);
             options["body"] = formattedBody
         }
-    
+        
         let data = await fetch(url, options);
-
-        return data.json();
+        return await data.json();
 
     } catch(error) {
         throw new Error("Failed to make api call");

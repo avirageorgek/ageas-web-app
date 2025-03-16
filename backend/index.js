@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+var cors = require('cors')
 const geolocationRouter = require("./routes/geolocation");
 const weatherRouter = require("./routes/weather");
 require('dotenv').config();
@@ -7,6 +8,7 @@ require('dotenv').config();
 console.log("Print application port: ", process.env.APPLICATION_PORT);
 const port = process.env.APPLICATION_PORT
 
+app.use(cors());
 app.use("/api/geolocation", geolocationRouter);
 app.use("/api/weather", weatherRouter);
 
