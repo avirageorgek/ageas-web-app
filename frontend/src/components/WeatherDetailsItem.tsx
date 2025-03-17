@@ -30,14 +30,14 @@ const WeatherDetailsItem: React.FC<WeatherDetailsItemProps> = ({
             <div className="flex flex-row justify-center">
                 {weatherIcon}
             </div>
-            <div className="flex flex-row justify-center items-center p-10 text-center">
+            <div className="flex flex-row justify-center items-center p-8 text-center">
                 <p className="block font-medium text-gray-900">{description}</p>
             </div>
-            <div className="flex flex-col justify-center items-center my-5">
+            <div className="flex flex-col justify-center items-center my-3">
                 <h5 className="block font-semibold text-gray-900">Temperature (min/max)</h5>
                 <p>{temperatureMin} / {temperatureMax}</p>
             </div>
-            <div className="flex flex-col justify-center items-center my-5">
+            <div className="flex flex-col justify-center items-center my-3">
                 <h5 className="block font-semibold text-gray-900">Wind speed (min/max)</h5>
                 <p>{windSpeedMin}/{windSpeedMax}</p>
             </div>

@@ -9,43 +9,48 @@ import { getWeatherData } from './actions/weather';
 import WeatherDetailsItem from './components/WeatherDetailsItem';
 import { WeatherObject } from './types/generic';
 import { WEATHER_ICONS } from './constants/weatherIcons';
+import MessageDisplayer from './components/MessageDisplayer';
 
 function App() {
   const currentLocation = useSelector((state) => state.location.currentLocation);
   const currentLongitude = useSelector((state) => state.location.currentLongitude);
   const currentLatitude = useSelector((state) => state.location.currentLatitude);
   const dispatch = useDispatch()
-  //const [currentLocation, setCurrentLocation] = useState<string>("");
+  const [localLocation, setLocalLocation] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
-  const [weatherData, setWeatherData] = useState<WeatherObject[]>([]);
+  const [weatherData, setWeatherData] = useState<WeatherObject[] | null>(null);
 
   useEffect(() => {
     (async () => {
-      console.log("currentLongitude: ",currentLongitude, " currentLongitude: ", currentLongitude);
       if(currentLongitude && currentLongitude) {
-        await getWeatherDetails(currentLongitude, currentLongitude, 5);
+        await getWeatherDetails(currentLatitude, currentLongitude, 5);
       }
     })()
     
   }, [currentLocation, currentLongitude, currentLatitude]);
 
-  const searchLocation = async () => {
-    if(!currentLocation) {
+  const submitLocation = async () => {
+    if(!localLocation) {
       setErrorMessage("Please enter a location");
       return
     }
 
     setErrorMessage("");
-    let result = await searchLocations(currentLocation);
-    console.log("Final: ",result)
+    let result = await searchLocations(localLocation);
     if(result && result.length > 0) {
       dispatch(updateLocation({
-        currentLocation,
+        currentLocation: localLocation,
         currentLongitude: result[0].longitude,
         currentLatitude: result[0].latitude
       }));
       await getWeatherDetails(result[0].latitude, result[0].longitude, 5);
-
+    } else {
+      dispatch(updateLocation({
+        currentLocation: null,
+        currentLongitude: null,
+        currentLatitude: null
+      }));
+      setWeatherData([])
     }
 
   }
@@ -66,23 +71,29 @@ function App() {
         <div className="flex justify-center items-end h-32  space-x-4">
           <div className='flex flex-col items-center'>
             <SearchBox title='Enter a Location' onChange={(e) => {
-              //updateLocation(e.target.value);
-              dispatch(updateLocation({
-                currentLocation: e.target.value,
-                currentLongitude,
-                currentLatitude
-              }));
+              setLocalLocation(e.target.value);
             }}/>
             {errorMessage && <p className='error-message'>{errorMessage}</p>}
           </div>
-          <CustomButton onClick={searchLocation}/>
+          <CustomButton onClick={submitLocation}/>
         </div>
       </div>
-      <div className='flex flex-row justify-center py-50'>
-        <div className="grid lg:grid-cols-5 md:grid-cols-2 sm:grid-cols-1 gap-5">
+      <div className='flex flex-row justify-center mt-10'>
+        {
+          currentLocation && 
+              <><label>Current Location: </label>{currentLocation}  </>
+        }
+      </div>
+      {
+       (weatherData && weatherData.length <= 0) &&
+        <MessageDisplayer message='No data available' messageType='info'/>
+      }
+      <div className='flex flex-row justify-center pt-20'>
+        <div className="grid lg:grid-cols-5 md:grid-cols-2 sm:grid-cols-1 gap-5 mx-10">
+          
           {
-            weatherData.map((weather) => {
-              return (<WeatherDetailsItem date={weather.date} weatherIcon={WEATHER_ICONS[weather.weatherCode]}
+            weatherData && weatherData.map((weather) => {
+              return (<WeatherDetailsItem key={weather.date} date={weather.date} weatherIcon={WEATHER_ICONS[weather.weatherCode]}
                 description={weather.weatherDescription} temperatureMin={weather.temperatureMin} 
                 temperatureMax={weather.temperatureMax} windSpeedMin={weather.windSpeedMin}
                 windSpeedMax={weather.windSpeedMax}

@@ -8,7 +8,6 @@ export const getWeatherData = async (latitude :number, longitude: number, foreca
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        console.log("Weather result: ", response);
         let data: ApiResponse = await response.json();
         if(data && data.success) {
             return data.data
