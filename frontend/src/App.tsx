@@ -1,4 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import {useDispatch, useSelector} from "react-redux";
+import {updateLocation} from "./stores/location";
 import Header from './components/Header'
 import SearchBox from './components/SearchBox'
 import CustomButton from './components/CustomButton';
@@ -9,10 +11,23 @@ import { WeatherObject } from './types/generic';
 import { WEATHER_ICONS } from './constants/weatherIcons';
 
 function App() {
-
-  const [currentLocation, setCurrentLocation] = useState<string>("");
+  const currentLocation = useSelector((state) => state.location.currentLocation);
+  const currentLongitude = useSelector((state) => state.location.currentLongitude);
+  const currentLatitude = useSelector((state) => state.location.currentLatitude);
+  const dispatch = useDispatch()
+  //const [currentLocation, setCurrentLocation] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [weatherData, setWeatherData] = useState<WeatherObject[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      console.log("currentLongitude: ",currentLongitude, " currentLongitude: ", currentLongitude);
+      if(currentLongitude && currentLongitude) {
+        await getWeatherDetails(currentLongitude, currentLongitude, 5);
+      }
+    })()
+    
+  }, [currentLocation, currentLongitude, currentLatitude]);
 
   const searchLocation = async () => {
     if(!currentLocation) {
@@ -24,14 +39,22 @@ function App() {
     let result = await searchLocations(currentLocation);
     console.log("Final: ",result)
     if(result && result.length > 0) {
-      console.log("Result here");
-      let data = await getWeatherData(result[0].latitude, result[0].longitude, 5);
-      if(data) {
-        setWeatherData(data.formattedData);
-      }
+      dispatch(updateLocation({
+        currentLocation,
+        currentLongitude: result[0].longitude,
+        currentLatitude: result[0].latitude
+      }));
+      await getWeatherDetails(result[0].latitude, result[0].longitude, 5);
 
     }
 
+  }
+
+  const getWeatherDetails = async (latitude: number, longitude: number, days: number) =>  {
+    let data = await getWeatherData(latitude, longitude, days);
+    if(data) {
+      setWeatherData(data.formattedData);
+    }
   }
 
   return (
@@ -43,7 +66,12 @@ function App() {
         <div className="flex justify-center items-end h-32  space-x-4">
           <div className='flex flex-col items-center'>
             <SearchBox title='Enter a Location' onChange={(e) => {
-              setCurrentLocation(e.target.value);
+              //updateLocation(e.target.value);
+              dispatch(updateLocation({
+                currentLocation: e.target.value,
+                currentLongitude,
+                currentLatitude
+              }));
             }}/>
             {errorMessage && <p className='error-message'>{errorMessage}</p>}
           </div>
