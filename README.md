@@ -4,6 +4,11 @@ The project has two parts
 Frontend which is written in Reactjs. Reactjs is installed using vite.
 Backend created using nodejs and expressjs
 
+React: v19
+Node Version: 20.15
+ExpressJs: 4.21
+
+
 ## Frontend
 Instructions to run Front end
 ```
