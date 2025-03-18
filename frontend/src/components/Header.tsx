@@ -9,7 +9,7 @@ const Header: React.FC<HeaderProps> = ({
 }) => {
     return (
         <header>
-            <h1 className="text-4xl">{title}</h1>
+            <h1 data-testid="title" className="text-4xl">{title}</h1>
         </header>
     )
 }

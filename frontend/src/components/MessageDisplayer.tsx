@@ -15,7 +15,7 @@ const MessageDisplayer: React.FC<MessageDisplayer> = ({
                 ((messageType === "info") && "border-orange-500 ") + 
                 ((messageType === "danger") && "border-red-600 ")
             } role="alert">
-                <p className="font-bold">{message}</p>
+                <p data-testid="message" className="font-bold">{message}</p>
             </div>
         </div>
     )
